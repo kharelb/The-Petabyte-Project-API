@@ -1,3 +1,6 @@
+# The Petabye Project (TPP)
+A project to discover radio transients over petabytes of radio data (archival as well as current) from telescopes across the globe. The project aims at implementing uniform searching algorithm through an AI powered pipeline. The uniform search also allows us to evaluate different selection function for different telescopic data for the same searching algorithm. The project was supported by National Science Foundation (NSF).
+**TPP Pipeline Block Diagram**<br>
 
 ## Table of Contents
 [![developer](https://img.shields.io/badge/Dev-bikashkharel-green?style)](https://github.com/kharelb)
