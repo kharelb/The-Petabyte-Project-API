@@ -1,0 +1,57 @@
+version: '2.15.1'         
+
+services:
+  # Configuration for the web service
+  web:
+    # Build the container using the Dockerfile in the ./api_app directory
+    build: ./api_app
+
+    # Map host port to container port for api
+    ports:
+      - "${API_PORT}:${API_PORT}"      # Should match
+
+
+    # Restart the container always if it stops
+    restart: always
+
+
+    # Create a read-only bind mount from the host to the container
+    volumes:
+      - ${ABS_PATH_CODE}:/code:ro
+
+
+    # Command to run the FastAPI application using uvicorn
+    # The --reload flag enables automatic reloading of the server when code changes occur
+    command: uvicorn server.app:app --host 0.0.0.0 --port 8000 --reload
+
+    # Define a dependency on the db service
+    depends_on:
+      - db
+
+  # Configuration for the db service
+  db:
+    # Build the container using the Dockerfile in the ./mongo directory
+    build: ./mongo
+
+    # Restart the container always if it stops
+    restart: always
+
+    # Environment variables for MongoDB initialization
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${USERNAME}  # Make sure to put it on the .env file
+      MONGO_INITDB_ROOT_PASSWORD: ${PASSWORD}
+
+    # Create a named volume for persistent data storage(otherwise data will be lost in restarting
+    # the container)
+    volumes:
+      - db_data:/data/db
+
+
+    # Map host port to container port
+    ports:
+      - "${DB_PORT}:{DB_PORT}"
+
+volumes:
+  # Create a named volume for persistent data storage called 'db_data'(for general purpose if needed)
+  db_data:
+
